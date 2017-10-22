@@ -3,6 +3,12 @@ package com.coderscampus.budgetingapp.domain;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Transaction
 {
   private Long id;
@@ -10,7 +16,9 @@ public class Transaction
   private BigDecimal total;
   private String type;
   private String note;
+  private Category category;
   
+  @Id @GeneratedValue
   public Long getId()
   {
     return id;
@@ -50,5 +58,14 @@ public class Transaction
   public void setNote(String note)
   {
     this.note = note;
+  }
+  @ManyToOne
+  public Category getCategory()
+  {
+    return category;
+  }
+  public void setCategory(Category category)
+  {
+    this.category = category;
   }
 }
