@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -18,7 +18,7 @@ public class User
   private Long id;
   private String username;
   private String password;
-  private Set<Group> groups = new TreeSet<>();
+  private Set<Budget> budgets = new TreeSet<>();
   
   @Id
   @GeneratedValue
@@ -47,13 +47,13 @@ public class User
     this.password = password;
   }
   
-  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="user")
-  public Set<Group> getGroups()
+  @ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="user")
+  public Set<Budget> getGroups()
   {
-    return groups;
+    return budgets;
   }
-  public void setGroups(Set<Group> groups)
+  public void setGroups(Set<Budget> budgets)
   {
-    this.groups = groups;
+    this.budgets = budgets;
   }
 }
