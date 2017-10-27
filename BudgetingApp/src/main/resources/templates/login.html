@@ -15,37 +15,42 @@
     </script>
   </head>
   <body>
-    <div class="container">
-     <form action="" method="post">
-        <fieldset>
-            <legend>Please Login</legend>
+    <div class="card">
+      <h2 class="card-header">
+        Please Login Below
+      </h2>
+      <div class="card-body">
+        <form action="" method="post">
+          <fieldset>
             <!-- use param.error assuming FormLoginConfigurer#failureUrl contains the query parameter error -->
             <div th:if="${param.error != null}" style="color: red;">
-                <div>
-                    Failed to login.
-                    <div th:if="${SPRING_SECURITY_LAST_EXCEPTION != null}">
-                      Reason: <span th:text="${SPRING_SECURITY_LAST_EXCEPTION.message}"></span>
-                    </div>
+              <div>
+                Failed to login.
+                <div th:if="${SPRING_SECURITY_LAST_EXCEPTION != null}">
+                  Reason: <span
+                    th:text="${SPRING_SECURITY_LAST_EXCEPTION.message}"></span>
                 </div>
+              </div>
             </div>
             <!-- the configured LogoutConfigurer#logoutSuccessUrl is /login?logout and contains the query param logout -->
-            <div th:if="${param.logout != null}">
-              You have been logged out.
+            <div th:if="${param.logout != null}">You have been
+              logged out.</div>
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input class="form-control" type="text" th:field="${user.username}" />
             </div>
-            <p>
-            <label for="username">Username</label>
-            <input type="text" th:field="${user.username}"/>
-            </p>
-            <p>
-            <label for="password">Password</label>
-            <input type="password" th:field="${user.password}"/>
-            </p>
+            <div class="form-group">
+              <label for="password">Password</label> 
+              <input type="password" class="form-control" th:field="${user.password}" />
+            </div>
             <div>
-                <button type="submit" class="btn">Log in</button>
-                <button id="registerBtn" type="button" class="btn btn-primary">Register</button>
+              <button type="submit" class="btn">Log in</button>
+              <button id="registerBtn" type="button"
+                class="btn btn-primary">Register</button>
             </div>
-        </fieldset>
-     </form>
+          </fieldset>
+        </form>
+      </div>
     </div>
   </body>
 </html>
