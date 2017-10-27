@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="users")
@@ -20,6 +21,7 @@ public class User
   private Long id;
   private String username;
   private String password;
+  private String confirmPassword;
   private Set<Budget> budgets = new TreeSet<>();
   private Set<Authority> authorities = new HashSet<>();
   
@@ -68,5 +70,14 @@ public class User
   public void setAuthorities(Set<Authority> authorities)
   {
     this.authorities = authorities;
+  }
+  @Transient
+  public String getConfirmPassword()
+  {
+    return confirmPassword;
+  }
+  public void setConfirmPassword(String confirmPassword)
+  {
+    this.confirmPassword = confirmPassword;
   }
 }
