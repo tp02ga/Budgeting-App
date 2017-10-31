@@ -12,15 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@NamedEntityGraph(name = "Budget.users", attributeNodes = @NamedAttributeNode("users"))
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Budget implements Comparable<Budget>
 {
@@ -48,6 +46,7 @@ public class Budget implements Comparable<Budget>
   }
   @ManyToMany
   @JoinTable(inverseJoinColumns=@JoinColumn(name="user_id"), joinColumns=@JoinColumn(name="budget_id"))
+  @JsonIgnore
   public Set<User> getUsers()
   {
     return users;
@@ -57,6 +56,7 @@ public class Budget implements Comparable<Budget>
     this.users = users;
   }
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="budget")
+  @JsonIgnore
   public Set<Group> getGroups()
   {
     return groups;

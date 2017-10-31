@@ -1,7 +1,5 @@
 package com.coderscampus.budgetingapp.web;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,20 +40,8 @@ public class BudgetController
   @RequestMapping(value="", method=RequestMethod.POST)
   public @ResponseBody Budget postBudget(@AuthenticationPrincipal User user, ModelMap model)
   {
-    Set<User> users = new HashSet<>();
-    Set<Budget> budgets = new HashSet<>();
-    
-    users.add(user);
-    
     Budget budget = new Budget();
-    budgets.add(budget);
-    
-    budget.setName("New Budget");
-    budget.setUsers(users);
-    
-    user.setBudgets(budgets);
-    
-    budget = budgetService.saveBudget(budget);
+    budget = budgetService.saveBudget(user, budget);
     
     getBudgets(user, model);
     

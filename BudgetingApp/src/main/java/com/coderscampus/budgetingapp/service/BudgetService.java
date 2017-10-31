@@ -26,8 +26,27 @@ public class BudgetService
     return budgetRepo.findByUsers(users);
   }
   
-  public Budget saveBudget (Budget budget)
+  public Budget saveBudget (User user, Budget budget)
   {
+    Set<User> users = new HashSet<>();
+    Set<Budget> budgets = new HashSet<>();
+    
+    users.add(user);
+    
+    budgets.add(budget);
+    
+    long count = getBudgetCount(users);
+    
+    budget.setName("New Budget #" + ++count);
+    budget.setUsers(users);
+    
+    user.setBudgets(budgets);
+    
     return budgetRepo.save(budget);
+  }
+
+  private long getBudgetCount(Set<User> users)
+  {
+    return budgetRepo.countByUsers(users);
   }
 }
