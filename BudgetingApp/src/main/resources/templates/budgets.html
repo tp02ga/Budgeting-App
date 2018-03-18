@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="list-group list-group-flush" th:each="budget : ${budgets}">
-        <a href="#" class="list-group-item list-group-item-action" th:text="${budget.name}">Example Budget</a>
+        <a th:href="@{/budgets/{id}(id=${budget.id})}" class="list-group-item list-group-item-action" th:text="${budget.name}">Example Budget</a>
       </div>
     </div>
   </body>

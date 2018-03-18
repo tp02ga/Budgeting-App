@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,28 +25,38 @@ public class BudgetController
   private BudgetService budgetService;
   
   @RequestMapping(value="", method=RequestMethod.GET)
-  public String getBudget(@AuthenticationPrincipal User user, ModelMap model)
+  public String getBudgets(@AuthenticationPrincipal User user, ModelMap model)
   {
     // this should fetch budgets from the database for the logged in user
-    getBudgets(user, model);
+    populateUserBudgetsOnModel(user, model);
     
     return "budgets";
   }
 
-  private void getBudgets(User user, ModelMap model)
+  @GetMapping("{budgetId}")
+  public String getBudget(@PathVariable Long budgetId, ModelMap model)
+  {
+    Budget budget = budgetService.findOne(budgetId);
+    
+    model.put("budget", budget);
+    
+    return "budget";
+  }
+  
+  private void populateUserBudgetsOnModel(User user, ModelMap model)
   {
     TreeSet<Budget> budgets = budgetService.getBudgets(user);
     
     model.put("budgets", budgets);
   }
-  
-  @RequestMapping(value="", method=RequestMethod.POST)
+
+  @PostMapping("")
   public @ResponseBody Budget postBudget(@AuthenticationPrincipal User user, ModelMap model)
   {
     Budget budget = new Budget();
     budget = budgetService.saveBudget(user, budget);
     
-    getBudgets(user, model);
+    populateUserBudgetsOnModel(user, model);
     
     return budget;
   }
