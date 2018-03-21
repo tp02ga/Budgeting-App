@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
   <head>
-    <title>Your Budget</title>
+    <title>Your Group</title>
     <script th:include="fragments/header :: headerScripts" th:remove="tag"></script>
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
   </head>
@@ -12,23 +12,13 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb h3">
               <li class="breadcrumb-item"><a href="/budgets">Budgets</a></li>
-              <li class="breadcrumb-item active" aria-current="page" th:text="${budget.name}"></li>
+              <li class="breadcrumb-item" aria-current="page"><a th:href="@{/budgets/{budgetId}(budgetId=${group.budget.id})}" th:text="${group.budget.name}"></a></li>
+              <li class="breadcrumb-item active" aria-current="page" th:text="${#strings.isEmpty(group.name) ? 'New Group' : group.name}"></li>
             </ol>
           </nav>
         </div>
       </div>
       <div class="card-body">
-        <div th:each="group : ${budget.groups}">
-          <h4 th:text="${group.name}"></h4>
-        </div>
-        
-        <div class="row" style="margin-top: 2em;">
-          <div class="col">
-            <form th:action="@{/budgets/{budgetId}/groups(budgetId=${budget.id})}" method="post">
-              <button type="submit" class="btn btn-primary">Create Group</button>
-            </form>
-          </div>
-        </div>
       </div>
     </div>
   </body>
