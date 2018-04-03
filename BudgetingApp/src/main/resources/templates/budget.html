@@ -19,7 +19,8 @@
       </div>
       <div class="card-body">
         <div th:each="group : ${budget.groups}">
-          <h4 th:text="${group.name}"></h4>
+          <h4 th:if="${!#strings.isEmpty(group.name)}"><a th:href="@{/budgets/{budgetId}/groups/{groupId}(budgetId=${budget.id},groupId=${group.id})}" th:text="${group.name}"></a></h4>
+          <h4 th:if="${#strings.isEmpty(group.name)}"><a th:href="@{/budgets/{budgetId}/groups/{groupId}(budgetId=${budget.id},groupId=${group.id})}">Unnamed Group</a></h4>
         </div>
         
         <div class="row" style="margin-top: 2em;">

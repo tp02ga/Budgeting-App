@@ -2,6 +2,7 @@ package com.coderscampus.budgetingapp.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,7 +27,7 @@ public class Budget implements Comparable<Budget>
   private Long id;
   private String name;
   private Set<User> users = new HashSet<>();
-  private Set<Group> groups = new TreeSet<>();
+  private SortedSet<Group> groups = new TreeSet<>();
   
   @Id @GeneratedValue
   public Long getId()
@@ -57,11 +59,12 @@ public class Budget implements Comparable<Budget>
   }
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="budget")
   @JsonIgnore
-  public Set<Group> getGroups()
+  @OrderBy
+  public SortedSet<Group> getGroups()
   {
     return groups;
   }
-  public void setGroups(Set<Group> groups)
+  public void setGroups(SortedSet<Group> groups)
   {
     this.groups = groups;
   }
