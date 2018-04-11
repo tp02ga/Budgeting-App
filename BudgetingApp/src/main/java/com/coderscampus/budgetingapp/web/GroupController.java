@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,5 +33,16 @@ public class GroupController
     Group group = groupService.findOne(groupId);
     model.put("group", group);
     return "group";
+  }
+  
+  @PostMapping("{groupId}")
+  public String postGroup(@ModelAttribute Group group, @PathVariable Long groupId, 
+      @PathVariable Long budgetId, ModelMap model)
+  {
+    Group groupFromDB = groupService.findOne(groupId);
+    groupFromDB.setName(group.getName());
+    groupFromDB = groupService.save(groupFromDB);
+    
+    return "redirect:/budgets/"+budgetId;
   }
 }

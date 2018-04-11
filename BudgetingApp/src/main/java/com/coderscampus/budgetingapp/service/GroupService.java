@@ -26,7 +26,7 @@ public class GroupService
     return save(group);
   }
 
-  private Group save(Group group)
+  public Group save(Group group)
   {
     return groupRepo.save(group);
   }
