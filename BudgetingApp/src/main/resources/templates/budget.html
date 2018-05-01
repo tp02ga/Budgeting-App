@@ -4,6 +4,30 @@
     <title>Your Budget</title>
     <script th:include="fragments/header :: headerScripts" th:remove="tag"></script>
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
+    <script th:inline="javascript">
+      //<![CDATA[
+      $(function () {
+    	$("button[id*='createCategory-']").click(function () {
+          var groupId = $(this).prop("id").split("-")[1];
+          var budgetId = /*[[${budget.id}]]*/ 0;
+          
+          $.ajax({
+            url: '/budgets/'+budgetId+'/groups/' + groupId + '/categories',
+            method: 'post',
+            type: 'json',
+            success : function (category) {
+              var url = '/budgets/'+budgetId+'/groups/' + groupId + '/categories/'+category.id;
+              window.location.href= url;
+            },
+            error : function (error){
+              console.log(error);
+            }
+          });
+          
+    	});
+      });
+      //]]> 
+    </script>
   </head>
   <body>
     <div class="card">
@@ -26,7 +50,7 @@
             </div>
             <div class="card-body">
               <p th:each="category : ${group.categories}" th:text="${category.name}"></p>
-              <button class="btn btn-primary">Create New Category</button>
+              <button class="btn btn-primary" th:id="|createCategory-${group.id}|">Create New Category</button>
             </div>
           
           </div>
