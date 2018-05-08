@@ -2,10 +2,11 @@ package com.coderscampus.budgetingapp.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coderscampus.budgetingapp.domain.Category;
 import com.coderscampus.budgetingapp.domain.Group;
@@ -22,7 +23,7 @@ public class CategoryController
   private CategoryService categoryService;
   
   @PostMapping("")
-  public @ResponseBody Category postCategory(@PathVariable Long groupId)
+  public String postCategory(@PathVariable Long groupId)
   {
     Category category = new Category();
     
@@ -32,6 +33,19 @@ public class CategoryController
     group.getCategories().add(category);
     category.setName("Test Category");
     
-    return categoryService.saveCategory(category);
+    category = categoryService.saveCategory(category);
+    
+    return "redirect:/budgets/"+group.getBudget().getId()+"/groups/"+group.getId()+"/categories/"+category.getId();
+  }
+  
+  @GetMapping("{categoryId}")
+  public String getCategory(@PathVariable Long categoryId, ModelMap model)
+  {
+    Category category = categoryService.findOne(categoryId);
+    
+    model.put("category", category);
+    model.put("group", category.getGroup());
+    
+    return "category";
   }
 }

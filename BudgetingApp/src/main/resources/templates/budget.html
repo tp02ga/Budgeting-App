@@ -7,24 +7,6 @@
     <script th:inline="javascript">
       //<![CDATA[
       $(function () {
-    	$("button[id*='createCategory-']").click(function () {
-          var groupId = $(this).prop("id").split("-")[1];
-          var budgetId = /*[[${budget.id}]]*/ 0;
-          
-          $.ajax({
-            url: '/budgets/'+budgetId+'/groups/' + groupId + '/categories',
-            method: 'post',
-            type: 'json',
-            success : function (category) {
-              var url = '/budgets/'+budgetId+'/groups/' + groupId + '/categories/'+category.id;
-              window.location.href= url;
-            },
-            error : function (error){
-              console.log(error);
-            }
-          });
-          
-    	});
       });
       //]]> 
     </script>
@@ -50,7 +32,9 @@
             </div>
             <div class="card-body">
               <p th:each="category : ${group.categories}" th:text="${category.name}"></p>
-              <button class="btn btn-primary" th:id="|createCategory-${group.id}|">Create New Category</button>
+              <form th:action="@{/budgets/{budgetId}/groups/{groupId}/categories(budgetId=${budget.id},groupId=${group.id})}" method="post">
+                <button type="submit" class="btn btn-primary" th:id="|createCategory-${group.id}|">Create New Category</button>
+              </form>
             </div>
           
           </div>

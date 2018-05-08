@@ -16,4 +16,9 @@ public class CategoryService
   {
     return categoryRepo.save(category);
   }
+
+  public Category findOne(Long categoryId)
+  {
+    return categoryRepo.findOne(categoryId);
+  }
 }
