@@ -20,15 +20,30 @@
         </div>
       </div>
       <div class="card-body">
-<!--         <form method="post" action=""> -->
-<!--           <div class="form-group row"> -->
-<!--             <label for="inputEmail3" class="col-sm-2 col-form-label form-control-lg">Name: </label> -->
-<!--             <div class="col-sm-10"> -->
-<!--               <input type="text" class="form-control form-control-lg" th:field="${group.name}" placeholder="Group Name"/> -->
-<!--             </div> -->
-<!--           </div> -->
-<!--           <button class="btn btn-primary btn-lg">Save</button> -->
-<!--         </form> -->
+        <form method="post" action="">
+          <input type="hidden" th:field="${category.id}"/>
+          
+          <!-- Category Name -->
+          <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label form-control-lg">Name: </label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-lg" th:field="${category.name}" placeholder="Dining Out"/>
+            </div>
+          </div>
+          
+          <!-- Category Budget Amount -->
+          <div class="input-group row">
+            <label for="budget" class="col-sm-2 col-form-label form-control-lg">Budget Amount: </label>
+            
+            <div class="input-group-prepend">
+              <span class="input-group-text">$</span>
+            </div>
+            <input type="number" step=".01" class="form-control form-control-lg" th:field="${category.budget}" placeholder="$100.00"/>
+            
+          </div>
+          
+          <button class="btn btn-primary btn-lg">Save</button>
+        </form>
       </div>
     </div>
   </body>
