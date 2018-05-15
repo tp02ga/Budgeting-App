@@ -1,5 +1,6 @@
 package com.coderscampus.budgetingapp.domain;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
@@ -27,9 +28,12 @@ public class Budget implements Comparable<Budget>
   private Long id;
   private String name;
   private Set<User> users = new HashSet<>();
+  private Date startDate;
+  private Date endDate;
   private SortedSet<Group> groups = new TreeSet<>();
-  
-  @Id @GeneratedValue
+
+  @Id
+  @GeneratedValue
   public Long getId()
   {
     return id;
@@ -47,7 +51,7 @@ public class Budget implements Comparable<Budget>
     this.name = name;
   }
   @ManyToMany
-  @JoinTable(inverseJoinColumns=@JoinColumn(name="user_id"), joinColumns=@JoinColumn(name="budget_id"))
+  @JoinTable(inverseJoinColumns = @JoinColumn(name = "user_id"), joinColumns = @JoinColumn(name = "budget_id"))
   @JsonIgnore
   public Set<User> getUsers()
   {
@@ -57,7 +61,7 @@ public class Budget implements Comparable<Budget>
   {
     this.users = users;
   }
-  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="budget")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "budget")
   @JsonIgnore
   @OrderBy
   public SortedSet<Group> getGroups()
@@ -68,7 +72,23 @@ public class Budget implements Comparable<Budget>
   {
     this.groups = groups;
   }
-  
+  public Date getStartDate()
+  {
+    return startDate;
+  }
+  public void setStartDate(Date startDate)
+  {
+    this.startDate = startDate;
+  }
+  public Date getEndDate()
+  {
+    return endDate;
+  }
+  public void setEndDate(Date endDate)
+  {
+    this.endDate = endDate;
+  }
+
   @Override
   public int compareTo(Budget budget)
   {
