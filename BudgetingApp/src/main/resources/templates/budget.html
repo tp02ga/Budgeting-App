@@ -3,10 +3,45 @@
   <head>
     <title>Your Budget</title>
     <script th:include="fragments/header :: headerScripts" th:remove="tag"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
+    <style type="text/css">
+      .link {
+        cursor: pointer;
+        color: #007bff;
+      }
+      .link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+      }
+    </style>
     <script th:inline="javascript">
       //<![CDATA[
       $(function () {
+    	$('#dateRange').daterangepicker({
+    		
+    	}, function (start, end, label) {
+          console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+		  $.ajax({
+			url: '',
+			data: {
+			  "startDate" : start.format('YYYY-MM-DD'),
+			  "endDate" : end.format('YYYY-MM-DD')
+			},
+			type: 'json',
+			method: 'put',
+			success: function () {
+		      $("#startDate").text(start.format('MMMM D, YYYY') + " - ");
+		      $("#endDate").text(end.format('MMMM D, YYYY'))
+			},
+			error : function (error) {
+		      console.log(error);
+			}
+		  })
+    		
+    	});
       });
       //]]> 
     </script>
@@ -25,11 +60,11 @@
       </div>
       
       <div class="card-body">
-        <div class="alert alert-secondary" role="alert">
-          <span class="h5" th:inline="text">
+        <div class="alert alert-secondary link" role="alert" id="dateRange">
+          <span class="h5" th:inline="text" id="startDate">
             [[${#dates.format(budget.startDate, 'MMMM d, yyyy')}]] -
           </span> 
-          <span class="h5" th:inline="text">
+          <span class="h5" th:inline="text" id="endDate">
             [[${#dates.format(budget.endDate, 'MMMM d, yyyy')}]]
           </span>
         </div>

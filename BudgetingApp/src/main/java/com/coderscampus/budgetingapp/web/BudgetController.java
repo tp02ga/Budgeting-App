@@ -1,5 +1,6 @@
 package com.coderscampus.budgetingapp.web;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TreeSet;
@@ -11,8 +12,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coderscampus.budgetingapp.domain.Budget;
@@ -52,6 +55,19 @@ public class BudgetController
     model.put("budgets", budgets);
   }
 
+  @PutMapping("{budgetId}")
+  public @ResponseBody void putBudget(@AuthenticationPrincipal User user, @RequestParam String startDate,
+      @RequestParam String endDate, @PathVariable Long budgetId) throws ParseException 
+  {
+    Budget budget = budgetService.findOne(budgetId);
+    
+    budget.setStartDate(budgetService.convertStringToDate(startDate));
+    budget.setEndDate(budgetService.convertStringToDate(endDate));
+    
+    budgetService.saveBudget(user, budget);
+  }
+  
+  
   @PostMapping("")
   public @ResponseBody Budget postBudget(@AuthenticationPrincipal User user, ModelMap model)
   {
