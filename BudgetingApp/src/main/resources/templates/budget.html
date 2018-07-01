@@ -48,7 +48,7 @@
     	
     	$("#addTransaction").click(function () {
     	  if (hasCategories)
-		    window.location.href="/budgets/"+budgetId+"/groups/";
+		    $("#addTransactionForm").submit();
     	  else
     		alert("You must create a category before you can add a transaction to your budget.");
     	});
@@ -69,7 +69,9 @@
             </nav>
           </div>
           <div class="col-2 col-md-1">
-            <i id="addTransaction" class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+            <form id="addTransactionForm" th:action="@{/budgets/{budgetId}/transactions(budgetId=${budget.id})}" method="post">
+              <i id="addTransaction" class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+            </form> 
           </div>
         </div>
       </div>
