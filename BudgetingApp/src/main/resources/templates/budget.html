@@ -20,6 +20,10 @@
     <script th:inline="javascript">
       //<![CDATA[
       $(function () {
+    	
+    	var hasCategories = /*[[${hasCategories}]]*/ false;
+    	var budgetId = /*[[${budget.id}]]*/ 0;
+    	
     	$('#dateRange').daterangepicker({
     		
     	}, function (start, end, label) {
@@ -40,7 +44,13 @@
 		      console.log(error);
 			}
 		  })
-    		
+    	});
+    	
+    	$("#addTransaction").click(function () {
+    	  if (hasCategories)
+		    window.location.href="/budgets/"+budgetId+"/groups/";
+    	  else
+    		alert("You must create a category before you can add a transaction to your budget.");
     	});
       });
       //]]> 
@@ -50,12 +60,17 @@
     <div class="card">
       <div class="card-header">
         <div class="row">
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb h3">
-              <li class="breadcrumb-item"><a href="/budgets">Budgets</a></li>
-              <li class="breadcrumb-item active" aria-current="page" th:text="${budget.name}"></li>
-            </ol>
-          </nav>
+          <div class="col-10 col-md-11">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb h3">
+                <li class="breadcrumb-item"><a href="/budgets">Budgets</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${budget.name}"></li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-2 col-md-1">
+            <i id="addTransaction" class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+          </div>
         </div>
       </div>
       
