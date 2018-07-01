@@ -1,5 +1,7 @@
 package com.coderscampus.budgetingapp.web;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,8 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.coderscampus.budgetingapp.domain.Budget;
+import com.coderscampus.budgetingapp.domain.Category;
 import com.coderscampus.budgetingapp.domain.Transaction;
 import com.coderscampus.budgetingapp.service.BudgetService;
+import com.coderscampus.budgetingapp.service.CategoryService;
+import com.coderscampus.budgetingapp.service.TransactionService;
 
 @Controller
 @RequestMapping(value= {"/budgets/{budgetId}/groups/{groupId}/categories/{categoryId}/transactions",
@@ -17,6 +22,10 @@ public class TransactionController
 {
   @Autowired
   private BudgetService budgetService;
+  @Autowired
+  private CategoryService categoryService;
+  @Autowired
+  private TransactionService transactionService;
   
   @PostMapping("")
   public String addTransactionToBudget(@PathVariable Long budgetId, 
@@ -26,15 +35,20 @@ public class TransactionController
     Transaction tx = new Transaction();
     Budget budget = budgetService.findOne(budgetId);
     
-    if (groupId == null)
+    tx.setBudget(budget);
+    budget.getTransactions().add(tx);
+    
+    tx.setDate(new Date());
+    
+    if (categoryId != null)
     {
-      // We're adding a transaction directly to the budget with no group / category associated to it
+      Category category = categoryService.findOne(categoryId);
       
+      tx.setCategory(category);
+      category.getTransactions().add(tx);
     }
-    else
-    {
-      
-    }
+    
+    transactionService.save(tx);
     return "redirect:/budgets/"+budgetId;
   }
   
