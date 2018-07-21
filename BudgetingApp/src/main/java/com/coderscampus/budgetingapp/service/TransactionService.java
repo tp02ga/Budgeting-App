@@ -16,4 +16,9 @@ public class TransactionService
   {
     return transactionRepo.save(transaction);
   }
+
+  public Transaction findOne(Long transactionId)
+  {
+    return transactionRepo.findOne(transactionId);
+  }
 }

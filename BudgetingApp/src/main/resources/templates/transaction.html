@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+  <head>
+    <title>Your Transaction</title>
+    <script th:include="fragments/header :: headerScripts" th:remove="tag"></script>
+    <link rel="stylesheet" href="/css/font-awesome.min.css"/>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb h3">
+              <li class="breadcrumb-item"><a href="/budgets">Budgets</a></li>
+              <li class="breadcrumb-item"><a th:href="@{/budgets/{budgetId}(budgetId=${budget.id})}" th:text="${budget.name}"></a></li>
+              <li class="breadcrumb-item active" aria-current="page">New Transaction</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+      <div class="card-body">
+        <form method="post" action="">
+          <input type="hidden" th:field="${transaction.id}"/>
+          
+          <!-- Transaction Date -->
+          <div class="form-group row">
+            <label for="date" class="col-sm-2 col-form-label form-control-lg">Transaction Date: </label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-lg" th:field="${transaction.date}" placeholder="2018-01-31"/>
+            </div>
+          </div>
+          
+          <!-- Transaction Budget Amount -->
+          <div class="input-group row">
+            <label for="total" class="col-sm-2 col-form-label form-control-lg">Transaction Amount: </label>
+            
+            <div class="input-group-prepend">
+              <span class="input-group-text">$</span>
+            </div>
+            <input type="number" step=".01" class="form-control form-control-lg" th:field="${transaction.total}" placeholder="100.00"/>
+          </div>
+          
+          <!-- Transaction Note -->
+          <div class="form-group row">
+            <label for="note" class="col-sm-2 col-form-label form-control-lg">Notes: </label>
+            <div class="col-sm-10">
+              <textarea maxlength="255" class="form-control form-control-lg" th:field="${transaction.note}" placeholder="(Optional) Insert any notes about your transaction here"></textarea>
+            </div>
+          </div>
+          
+          <button class="btn btn-primary btn-lg">Save</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

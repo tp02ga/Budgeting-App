@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,8 +50,18 @@ public class TransactionController
       category.getTransactions().add(tx);
     }
     
-    transactionService.save(tx);
-    return "redirect:/budgets/"+budgetId;
+    tx = transactionService.save(tx);
+    return "redirect:/budgets/"+budgetId+"/transactions/"+tx.getId();
+  }
+  
+  @GetMapping("{transactionId}")
+  public String getTransaction(@PathVariable Long transactionId, ModelMap model) 
+  {
+    Transaction transaction = transactionService.findOne(transactionId);
+    model.put("transaction", transaction);
+    model.put("budget", transaction.getBudget());
+    
+    return "transaction";
   }
   
 }
