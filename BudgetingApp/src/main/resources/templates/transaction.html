@@ -3,6 +3,12 @@
   <head>
     <title>Your Transaction</title>
     <script th:include="fragments/header :: headerScripts" th:remove="tag"></script>
+    <script th:inline="javascript">
+      $(function () {
+    	var dateValue = /*[[${#dates.format(transaction.date, 'yyyy-MM-dd')}]]*/ '2018-01-01';  
+        $("#date").val(dateValue); 
+      });
+    </script>
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
   </head>
   <body>
@@ -21,6 +27,7 @@
       <div class="card-body">
         <form method="post" action="">
           <input type="hidden" th:field="${transaction.id}"/>
+          <input type="hidden" th:field="${transaction.budget}"/>
           
           <!-- Transaction Date -->
           <div class="form-group row">
