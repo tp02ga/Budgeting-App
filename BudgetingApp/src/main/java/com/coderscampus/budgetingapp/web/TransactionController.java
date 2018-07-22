@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +63,13 @@ public class TransactionController
     model.put("budget", transaction.getBudget());
     
     return "transaction";
+  }
+  
+  @PostMapping("{transactionId}")
+  public String postTransaction(@ModelAttribute Transaction transaction, @PathVariable Long transactionId)
+  {
+    transaction = transactionService.save(transaction);
+    return "redirect:/budgets/"+transaction.getBudget().getId();
   }
   
 }
