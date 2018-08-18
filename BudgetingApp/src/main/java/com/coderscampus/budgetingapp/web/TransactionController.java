@@ -1,6 +1,6 @@
 package com.coderscampus.budgetingapp.web;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +41,9 @@ public class TransactionController
     tx.setBudget(budget);
     budget.getTransactions().add(tx);
     
-    tx.setDate(new Date());
+    // old way = new Date();
+    // new way = LocalDate.now();  // or LocalDateTime.now();
+    tx.setDate(LocalDate.now());
     
     if (categoryId != null)
     {
