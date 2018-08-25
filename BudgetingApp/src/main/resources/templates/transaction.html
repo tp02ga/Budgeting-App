@@ -3,7 +3,18 @@
   <head>
     <title>Your Transaction</title>
     <script th:include="fragments/header :: headerScripts" th:remove="tag"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/css/jquery-ui.css"/>
+    <script th:inline="javascript">
+      $(function () {
+    	var categories = /*[[${categories}]]*/ [];
+    	
+    	$("#category").autocomplete({
+    	  source: categories
+    	});
+      });
+    </script>
   </head>
   <body>
     <div class="card">
@@ -39,6 +50,11 @@
               <span class="input-group-text">$</span>
             </div>
             <input type="number" step=".01" class="form-control form-control-lg" th:field="${transaction.total}" placeholder="100.00"/>
+          </div>
+          
+          <div class="input-group row">
+            <label for="category" class="col-sm-2 col-form-label form-control-lg">Category: </label>
+            <input type="text" class="form-control form-control-lg" th:field="${transaction.category}" />
           </div>
           
           <!-- Transaction Note -->
