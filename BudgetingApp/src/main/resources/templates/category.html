@@ -44,6 +44,18 @@
           
           <button class="btn btn-primary btn-lg">Save</button>
         </form>
+        
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 0.25em">
+      <div class="card-header">
+        <strong>Transactions</strong>
+      </div>
+      <div class="card-body">
+        <div th:each="transaction : ${category.transactions}">
+          <a th:href="@{/budgets/{budgetId}/categories/{categoryId}/transactions/{transactionId}(budgetId=${group.budget.id},categoryId=${category.id},transactionId=${transaction.id})}" th:text="|${#temporals.format(transaction.date, 'MMM-dd')}  $${#numbers.formatDecimal(transaction.total, 0, 'COMMA', 2, 'POINT')}|"></a>
+        </div>
       </div>
     </div>
   </body>
