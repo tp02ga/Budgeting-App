@@ -7,12 +7,17 @@
     <script th:inline="javascript">
       var budgetId = /*[[${group.budget.id}]]*/ 0;
       var categoryId = /*[[${category.id}]]*/ 0;
+      var groupId = /*[[${group.id}]]*/ 0;
       
       $(function () {
     	$("tr[id*='transaction-']").click(function () {
     	  var transactionId = $(this).prop('id').split('-')[1];
     	  
-    	  window.location.href = '/budgets/'+budgetId+'/categories/'+categoryId+'/transactions/'+transactionId;
+    	  window.location.href = '/budgets/'+budgetId+'/groups/'+groupId+'/categories/'+categoryId+'/transactions/'+transactionId;
+    	});
+    	
+    	$("#addTransaction").click(function () {
+    	  $("#addTransactionForm").submit();
     	});
       });
     </script>
@@ -21,14 +26,21 @@
     <div class="card">
       <div class="card-header">
         <div class="row">
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb h3">
-              <li class="breadcrumb-item"><a href="/budgets">Budgets</a></li>
-              <li class="breadcrumb-item"><a th:href="@{/budgets/{budgetId}(budgetId=${group.budget.id})}" th:text="${group.budget.name}"></a></li>
-              <li class="breadcrumb-item"><a th:href="@{/budgets/{budgetId}/groups/{groupId}(budgetId=${group.budget.id},groupId=${group.id})}" th:text="${#strings.isEmpty(group.name) ? 'New Group' : group.name}"></a></li>
-              <li class="breadcrumb-item active" aria-current="page" th:text="${category.name}"></li>
-            </ol>
-          </nav>
+          <div class="col-10 col-md-11">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb h3">
+                <li class="breadcrumb-item"><a href="/budgets">Budgets</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/budgets/{budgetId}(budgetId=${group.budget.id})}" th:text="${group.budget.name}"></a></li>
+                <li class="breadcrumb-item"><a th:href="@{/budgets/{budgetId}/groups/{groupId}(budgetId=${group.budget.id},groupId=${group.id})}" th:text="${#strings.isEmpty(group.name) ? 'New Group' : group.name}"></a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${category.name}"></li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-2 col-md-1">
+            <form id="addTransactionForm" th:action="@{/budgets/{budgetId}/groups/{groupId}/categories/{categoryId}/transactions(budgetId=${group.budget.id},groupId=${group.id},categoryId=${category.id})}" method="post">
+              <i id="addTransaction" class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+            </form> 
+          </div>
         </div>
       </div>
       <div class="card-body">

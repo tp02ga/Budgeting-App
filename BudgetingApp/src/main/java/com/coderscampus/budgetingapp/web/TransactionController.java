@@ -39,6 +39,7 @@ public class TransactionController
                                      @PathVariable(required=false) Long groupId,
                                      @PathVariable(required=false) Long categoryId)
   {
+    String retUrl = "";
     Transaction tx = new Transaction();
     Budget budget = budgetService.findOne(budgetId);
     
@@ -55,10 +56,13 @@ public class TransactionController
       
       tx.setCategory(category);
       category.getTransactions().add(tx);
+      retUrl = "/budgets/"+budgetId+"/groups/"+category.getGroup().getId()+"/categories/"+category.getId()+"/transactions";
+    } else {
+      retUrl = "/budgets/"+budgetId+"/transactions";
     }
     
     tx = transactionService.save(tx);
-    return "redirect:/budgets/"+budgetId+"/transactions/"+tx.getId();
+    return "redirect:" + retUrl + "/"+tx.getId();  
   }
   
   @GetMapping("{transactionId}")
