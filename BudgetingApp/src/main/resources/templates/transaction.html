@@ -7,13 +7,36 @@
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="/css/jquery-ui.css"/>
     <script th:inline="javascript">
+      //<![CDATA[
       $(function () {
     	var categories = /*[[${categories}]]*/ [];
     	
-    	$("#category").autocomplete({
-    	  source: categories
+    	var categoryValue = $("#category").val();
+    	
+    	if (categoryValue != null) {
+    	  for (var i=0; i<categories.length; i++) {
+    		if (categoryValue == categories[i].value) {
+    	      $("#category-name").val(categories[i].label);
+    		}
+    	  }
+    	}
+    	
+    	$("#category-name").autocomplete({
+    	  source: categories,
+    	  focus: function( event, ui ) {
+            $( "#category-name" ).val( ui.item.label );
+             
+            return false;
+          },
+          select: function ( event, ui) {
+        	$( "#category-name").val( ui.item.label );
+        	$( "#category").val( ui.item.value );
+        	
+        	return false;
+          }
     	});
       });
+      //]]> 
     </script>
   </head>
   <body>
@@ -53,8 +76,9 @@
           </div>
           
           <div class="input-group row">
-            <label for="category" class="col-sm-2 col-form-label form-control-lg">Category: </label>
-            <input type="text" class="form-control form-control-lg" th:field="${transaction.category}" />
+            <label for="category-name" class="col-sm-2 col-form-label form-control-lg">Category: </label>
+            <input type="text" class="form-control form-control-lg" id="category-name" name="category-name"/>
+            <input type="hidden" th:field="${transaction.category}" />
           </div>
           
           <!-- Transaction Note -->

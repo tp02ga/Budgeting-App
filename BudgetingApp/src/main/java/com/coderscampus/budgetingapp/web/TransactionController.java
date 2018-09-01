@@ -3,7 +3,6 @@ package com.coderscampus.budgetingapp.web;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.coderscampus.budgetingapp.domain.Budget;
 import com.coderscampus.budgetingapp.domain.Category;
 import com.coderscampus.budgetingapp.domain.Transaction;
+import com.coderscampus.budgetingapp.dto.CategoryDto;
 import com.coderscampus.budgetingapp.service.BudgetService;
 import com.coderscampus.budgetingapp.service.CategoryService;
 import com.coderscampus.budgetingapp.service.TransactionService;
@@ -67,12 +67,12 @@ public class TransactionController
     Transaction transaction = transactionService.findOne(transactionId);
     model.put("transaction", transaction);
     model.put("budget", transaction.getBudget());
-    List<String> categories = transaction.getBudget().getGroups()
-                                          .stream()
-                                          .map(group -> group.getCategories())
-                                          .flatMap(Collection::stream)
-                                          .map(category -> category.getName())
-                                          .collect(Collectors.toList());
+    List<CategoryDto> categories = transaction.getBudget().getGroups()
+                                         .stream()
+                                         .map(group -> group.getCategories())
+                                         .flatMap(Collection::stream)
+                                         .map(category -> new CategoryDto(category.getId().toString(), category.getName()))
+                                         .collect(Collectors.toList());
     
     model.put("categories", categories);
     return "transaction";
