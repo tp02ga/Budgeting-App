@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 @Entity
 public class Category
@@ -57,6 +58,7 @@ public class Category
     this.group = group;
   }
   @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="category")
+  @OrderBy("date DESC")
   public Set<Transaction> getTransactions()
   {
     return transactions;
