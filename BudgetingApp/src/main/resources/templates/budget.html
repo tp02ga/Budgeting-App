@@ -92,9 +92,24 @@
               <h4 th:if="${#strings.isEmpty(group.name)}"><a th:href="@{/budgets/{budgetId}/groups/{groupId}(budgetId=${budget.id},groupId=${group.id})}">Unnamed Group</a></h4>
             </div>
             <div class="card-body">
-              <div th:each="category : ${group.categories}">
-                <a th:href="@{/budgets/{budgetId}/groups/{groupId}/categories/{categoryId}(budgetId=${budget.id},groupId=${group.id},categoryId=${category.id})}" th:text="${category.name}"></a>
-              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Planned</th>
+                    <th scope="col">Spent</th>
+                    <th scope="col">Remaining</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="category : ${group.categories}">
+                    <td scope="row"><a th:href="@{/budgets/{budgetId}/groups/{groupId}/categories/{categoryId}(budgetId=${budget.id},groupId=${group.id},categoryId=${category.id})}" th:text="${category.name}"></a></td>
+                    <td>$1,000</td>
+                    <td>$400</td>
+                    <td>$600</td>
+                  </tr>
+                </tbody>
+              </table>
               <form style="margin-top: 1.5em;" th:action="@{/budgets/{budgetId}/groups/{groupId}/categories(budgetId=${budget.id},groupId=${group.id})}" method="post">
                 <button type="submit" class="btn btn-primary" th:id="|createCategory-${group.id}|">Create New Category</button>
               </form>
