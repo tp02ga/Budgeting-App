@@ -42,6 +42,15 @@
             </form> 
           </div>
         </div>
+        
+        <div class="alert alert-secondary link" role="alert">
+          <span class="h5" th:inline="text" id="startDate">
+            [[${#temporals.format(category.group.budget.startDate, 'MMMM d, yyyy')}]] -
+          </span> 
+          <span class="h5" th:inline="text" id="endDate">
+            [[${#temporals.format(category.group.budget.endDate, 'MMMM d, yyyy')}]]
+          </span>
+        </div>
       </div>
       <div class="card-body">
         <form method="post" action="">
@@ -87,10 +96,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr th:each="transaction : ${category.transactions}" style="cursor: pointer;" th:id="|transaction-${transaction.id}|">
+            <tr th:each="transaction : ${filteredTxns}" style="cursor: pointer;" th:id="|transaction-${transaction.id}|">
               <td th:text="${#temporals.format(transaction.date, 'MMM-dd')}"></td>
               <td th:text="${category.name}"></td>
-              <td th:text="|$${#numbers.formatDecimal(transaction.total, 0, 'COMMA', 2, 'POINT')}|"></td>
+              <td th:if="${transaction.total != null}" th:text="|$${#numbers.formatDecimal(transaction.total, 0, 'COMMA', 2, 'POINT')}|"></td>
+              <td th:if="${transaction.total == null}">$0.00</td>
               <td th:text="${transaction.note}"></td>
 <!--               <a th:href="@{/budgets/{budgetId}/categories/{categoryId}/transactions/{transactionId}(budgetId=${group.budget.id},categoryId=${category.id},transactionId=${transaction.id})}" th:text="|${#temporals.format(transaction.date, 'MMM-dd')}  $${#numbers.formatDecimal(transaction.total, 0, 'COMMA', 2, 'POINT')}|"></a> -->
             </tr>

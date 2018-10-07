@@ -1,7 +1,8 @@
 package com.coderscampus.budgetingapp.service;
 
 import java.text.ParseException;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -66,8 +67,8 @@ public class BudgetService
     return budgetRepo.findOne(budgetId);
   }
   
-  public Date convertStringToDate(String date) throws ParseException
+  public LocalDate convertStringToDate(String date) throws ParseException
   {
-    return DateUtils.parseDate(date, "yyyy-MM-dd");
+    return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
   }
 }

@@ -1,5 +1,9 @@
 package com.coderscampus.budgetingapp.web;
 
+import java.time.LocalDate;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.coderscampus.budgetingapp.domain.Category;
 import com.coderscampus.budgetingapp.domain.Group;
+import com.coderscampus.budgetingapp.domain.Transaction;
 import com.coderscampus.budgetingapp.service.CategoryService;
 import com.coderscampus.budgetingapp.service.GroupService;
 
@@ -44,6 +49,16 @@ public class CategoryController
   {
     Category category = categoryService.findOne(categoryId);
     
+    LocalDate startDate = category.getGroup().getBudget().getStartDate();
+    LocalDate endDate = category.getGroup().getBudget().getEndDate();
+    
+    Set<Transaction> filteredTxns = category.getTransactions().stream()
+                                            .filter(t -> (t.getDate().equals(startDate) 
+                                                          || t.getDate().isAfter(startDate)) && 
+                                                          (t.getDate().isBefore(endDate) || 
+                                                              t.getDate().equals(endDate)))
+                                            .collect(Collectors.toSet());
+    model.put("filteredTxns", filteredTxns);
     model.put("category", category);
     model.put("group", category.getGroup());
     

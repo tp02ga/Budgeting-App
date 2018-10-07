@@ -79,10 +79,10 @@
       <div class="card-body">
         <div class="alert alert-secondary link" role="alert" id="dateRange">
           <span class="h5" th:inline="text" id="startDate">
-            [[${#dates.format(budget.startDate, 'MMMM d, yyyy')}]] -
+            [[${#temporals.format(budget.startDate, 'MMMM d, yyyy')}]] -
           </span> 
           <span class="h5" th:inline="text" id="endDate">
-            [[${#dates.format(budget.endDate, 'MMMM d, yyyy')}]]
+            [[${#temporals.format(budget.endDate, 'MMMM d, yyyy')}]]
           </span>
         </div>
         <div th:each="group : ${budget.groups}">
