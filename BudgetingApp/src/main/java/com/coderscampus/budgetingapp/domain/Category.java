@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Transient;
 
 @Entity
 public class Category
@@ -66,5 +67,46 @@ public class Category
   public void setTransactions(Set<Transaction> transactions)
   {
     this.transactions = transactions;
+  }
+  
+  @Transient
+  public BigDecimal getSpent() {
+    double sum = this.getTransactions().stream()
+                          .mapToDouble(t -> {
+                            if (t.getTotal() == null)
+                              return 0.0;
+                            else 
+                              return t.getTotal().doubleValue(); 
+                          })
+                          .sum();
+    return BigDecimal.valueOf(sum);
+  }
+  @Transient
+  public BigDecimal getRemaining() {
+    return this.getBudget().subtract(this.getSpent());
+  }
+  
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
+  }
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Category other = (Category) obj;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
+    return true;
   }
 }
